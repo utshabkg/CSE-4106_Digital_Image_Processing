@@ -1,22 +1,23 @@
 import numpy as np
-import pandas as pd
 
 def temporal_sptl2(D, c):
     const = 5
-    row = D
-    col = D
-    pred1 = np.zeros((D, D))
-    pred11 = np.zeros((D, D))
+    [row, col] = np.shape(D)
+    pred1 = np.zeros((row+1, col+1))
+    pred11 = np.zeros((row+1, col+1))
 
-    pred1[0, :] = const
-    #print(pred1)
+    pred1[0, :] = const * np.ones((1, col+1))
+    pred1[1: row+1, 0] = const
+    pred1[1: row+1, 1:col+1] = D
+    # pred1[0, :] = const
+    # #print(pred1)
 
-    pred1[1:row, 0] = const
-    #print(pred1)
+    # pred1[1:row, 0] = const
+    # #print(pred1)
 
-    pred1[1:row, 1:col] = D
-    print(pred1)
-    print(pred11)
+    # pred1[1:row, 1:col] = D
+    # print(pred1)
+    # print(pred11)
 
     if c==1:    #X=B
         for i in range(1, row):
@@ -46,9 +47,12 @@ def temporal_sptl2(D, c):
         for i in range(1, row):
             for j in range(1, col):
                 pred11[i][j] = pred1[i-1][j] + (0.5 * (pred1[i][j-1] - pred1[i-1][j-1]))
-    pred11 = pred11[1:row, 1:col]
-    print(pred11)
+    
+    pred11 = pred11[1:row+1, 1:col+1]
+    # print(pred11)
     pred11 = D - np.fix(pred11)
-    print(pred11)
-    pred11 = pred11.astype('double')
-    print(pred11)
+    # print(pred11)
+    # pred11 = pred11.astype('double')
+    # print(pred11)
+
+    return pred11
